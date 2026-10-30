@@ -1,0 +1,28 @@
+services:
+  freellmapi:
+    type: web
+    name: freellmapi-studio
+    env: docker
+    repo: https://github.com/Vectorstudio11379/freellmapi.git
+    branch: render-deploy
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: PORT
+        value: "3001"
+      - key: ENCRYPTION_KEY
+        generate: true
+  freellmapi-warm:
+    type: worker
+    name: freellmapi-warm
+    env: docker
+    repo: https://github.com/Vectorstudio11379/freellmapi.git
+    branch: render-deploy
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: TARGET_URL
+        value: "https://freellmapi-studio.onrender.com"
+    startCommand: "node scripts/keep-warm.js"
+
+
